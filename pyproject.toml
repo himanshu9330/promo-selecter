@@ -1,0 +1,11 @@
+[project]
+name = "microdrama-clip-finder"
+version = "0.1.0"
+description = "Find promo clips in timestamped microdrama screenplays"
+requires-python = ">=3.10"
+dependencies = [
+  "PyYAML>=6.0",
+]
+
+[project.scripts]
+clip-finder = "src.main:main"

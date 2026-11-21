@@ -1,0 +1,15 @@
+llm:
+  provider: openrouter
+  model: nvidia/nemotron-3-ultra-550b-a55b
+
+clips:
+  window:
+    min_seconds: 20
+    max_seconds: 60
+  top_n_per_episode: 5
+
+ranking_weights:
+  hook: 0.30
+  cliffhanger: 0.30
+  standalone: 0.25
+  emotion: 0.15
