@@ -43,14 +43,18 @@ def write_promos_csv(output_path: str, promos: list[dict]) -> None:
         writer.writeheader()
         for promo in promos:
             scores = promo.get("scores", {})
+            ep_num = promo.get("episode_number") or promo.get("episode", "")
+            s_s = promo.get("start_s", promo.get("start_seconds", 0.0))
+            e_s = promo.get("end_s", promo.get("end_seconds", 0.0))
+            d_s = promo.get("duration_s", promo.get("duration_seconds", 0.0))
             writer.writerow(
                 {
                     "rank": promo.get("rank", 1),
-                    "episode_number": promo.get("episode_number", ""),
+                    "episode_number": ep_num,
                     "clip_id": promo.get("clip_id", ""),
-                    "start_s": promo.get("start_s", 0.0),
-                    "end_s": promo.get("end_s", 0.0),
-                    "duration_s": promo.get("duration_s", 0.0),
+                    "start_s": float(s_s),
+                    "end_s": float(e_s),
+                    "duration_s": float(d_s),
                     "weighted_score": promo.get("weighted_score", 0.0),
                     "hook_line": promo.get("hook_line", ""),
                     "cliffhanger_line": promo.get("cliffhanger_line", ""),
@@ -73,12 +77,16 @@ def write_report_md(output_path: str, promos: list[dict]) -> None:
         c = scores.get("cliffhanger", promo.get("cliffhanger", 8))
         e = scores.get("emotion", promo.get("emotion", 8))
         s = promo.get("standalone", 8)
+        ep_num = promo.get("episode_number") or promo.get("episode", "")
+        s_s = float(promo.get("start_s", promo.get("start_seconds", 0.0)))
+        e_s = float(promo.get("end_s", promo.get("end_seconds", 0.0)))
+        d_s = float(promo.get("duration_s", promo.get("duration_seconds", 0.0)))
         lines.extend(
             [
                 f"## Rank {promo.get('rank', 1)}: {promo.get('clip_id', '')}",
                 "",
-                f"- Episode: {promo.get('episode_number', '')}",
-                f"- Segment: {float(promo.get('start_s', 0)):.3f}s–{float(promo.get('end_s', 0)):.3f}s ({float(promo.get('duration_s', 0)):.3f}s)",
+                f"- Episode: {ep_num}",
+                f"- Segment: {s_s:.1f}s–{e_s:.1f}s ({d_s:.1f}s)",
                 f"- Hook: {promo.get('hook_line', '')}",
                 f"- Cliffhanger: {promo.get('cliffhanger_line', '')}",
                 f"- Why it works: {promo.get('why_it_works', '')}",
